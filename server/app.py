@@ -1,7 +1,7 @@
 # server/app.py
 #!/usr/bin/env python3
 
-from flask import Flask, make_response
+from flask import Flask, make_response, abort
 from flask_migrate import Migrate
 
 from models import db, Earthquake
@@ -29,7 +29,8 @@ def res_by_id(id):
         response_body = quake.to_dict()
         return make_response(response_body,200)
     
-    return {"error": f"Eathquake {id} Not Found!"}
+    # abort(404,{"error": f"Eathquake {id} Not Found!"})
+    return make_response({"message": f"Earthquake {id} not found."}, 404)
 
 @app.route('/earthquakes/magnitude/<float:magnitude>')
 def by_mag(magnitude):
