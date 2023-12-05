@@ -29,17 +29,21 @@ def res_by_id(id):
         response_body = quake.to_dict()
         return make_response(response_body,200)
     
-    return {"error": "Hotel Not Found!"}
+    return {"error": f"Eathquake {id} Not Found!"}
 
 @app.route('/earthquakes/magnitude/<float:magnitude>')
 def by_mag(magnitude):
     quakes = Earthquake.query.filter(Earthquake.magnitude >= magnitude).all()
     
-    if quakes != []:
-        response_body = [quake.to_dict() for quake in quakes]
-        return make_response(response_body,200)
     
-    return {"error": "Hotel Not Found!"}
+    response_body = {
+            "count": len(quakes),
+            "quakes": [quake.to_dict() for quake in quakes]
+        }
+        
+    return make_response(response_body,200)
+    
+    
 
 
 if __name__ == '__main__':
